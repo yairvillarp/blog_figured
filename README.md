@@ -12,3 +12,8 @@ after that you will be able to run
 npm run watch
 ````
 
+to populate the DB you can do 
+````
+php artisan migrate
+php artisan db:seed
+`````
