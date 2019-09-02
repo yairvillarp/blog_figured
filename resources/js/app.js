@@ -7,7 +7,7 @@ Vue.use(VueRouter)
 
 let routes = [
     { path: '/', component: require('./components/Articles.vue').default },
-    { path: '/article/:id', component: require('./components/Article.vue').default }
+    { path: '/article/:slug', component: require('./components/Article.vue').default }
 ]
 
 const router = new VueRouter({
@@ -21,6 +21,7 @@ Vue.filter('Date',function(created){
 
 
 Vue.component('navbar', require('./components/Navbar.vue').default);
+Vue.component('categories', require('./components/Categories.vue').default);
 
 const app = new Vue({
     el: '#app',

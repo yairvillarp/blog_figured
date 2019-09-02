@@ -3,11 +3,15 @@
 use Faker\Generator as Faker;
 
 $factory->define(App\Models\Article::class, function (Faker $faker) {
+    $title = $faker->text(50);
     return [
-        'title' => $faker->text(50),
+        'title' => $title,
         'intro' => $faker->text(220),
-        'img' => "http://placehold.it/900x300",
+        'slug' => str_slug($title, '-'),
+        'img' => "900x300.png",
+        'categories_id' => "",
         'body'  => $faker->text(1500),
+        'tags'  => [],
         'comments' => [
             // {
             //     'username' => 'user name test',

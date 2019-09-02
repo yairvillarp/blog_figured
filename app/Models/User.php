@@ -1,15 +1,19 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+use Illuminate\Auth\Authenticatable as AuthenticatableTrait;
+use Illuminate\Contracts\Auth\Authenticatable;
 
-class User extends Authenticatable
+class User extends Eloquent implements Authenticatable
 {
+    use AuthenticatableTrait;
     use Notifiable;
-
+    
+    protected $connection = 'mongodb';
+    protected $collection = 'users';
     /**
      * The attributes that are mass assignable.
      *

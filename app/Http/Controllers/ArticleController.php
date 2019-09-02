@@ -17,31 +17,21 @@ class ArticleController extends Controller
     public function index()
     {
         // Get articles
-        $articles = Article::orderBy('created_at', 'desc')->paginate(5);
+
+        $articles = Article::with("Category")->orderBy('created_at', 'desc')->paginate(5);
 
         // Return collection of articles as a resource
         return ArticleResource::collection($articles);
     }
 
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function perCategory($id)
     {
-        $article = $request->isMethod('put') ? Article::findOrFail($request->article_id) : new Article;
+        // Get articles
 
-        $article->id = $request->input('article_id');
-        $article->title = $request->input('title');
-        $article->body = $request->input('body');
+        $articles = Article::with("Category")->where('categories_id', $id)->orderBy('created_at', 'desc')->paginate(5);
 
-        if($article->save()) {
-            return new ArticleResource($article);
-        }
-        
+        // Return collection of articles as a resource
+        return ArticleResource::collection($articles);
     }
 
     /**
@@ -50,10 +40,10 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
         // Get article
-        $article = Article::findOrFail($id);
+        $article = Article::where('slug', $slug)->first();
 
         // Return full single article as a json
         return response()->json(["data"=>$article]);
@@ -71,21 +61,5 @@ class ArticleController extends Controller
             // Return full single article as json
             return response()->json(["data"=>$article]); 
         }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        // Get article
-        $article = Article::findOrFail($id);
-
-        if($article->delete()) {
-            return new ArticleResource($article);
-        }    
     }
 }

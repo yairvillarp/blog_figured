@@ -11,9 +11,33 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('/admin', function () {
-    return view('admin');
+Route::get('/', function () { return view('layouts.welcome'); });
+
+Route::prefix('admin')->group(function () {
+    Auth::routes();
+    Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
+    
+    Route::get('/', 'HomeController@index')->name('home');
+
+    Route::resource('/articles', 'Admin\ArticlesController', [
+        'names' => [
+            'index' => 'Articles',
+            'create' => 'Articles New',
+            'store' => 'Articles Store',
+            'edit' => 'Articles Edit',
+            'update' => 'Articles Update',
+            'destroy' => 'Articles Delete',
+        ]
+    ]);
+
+    Route::resource('/categories', 'Admin\CategoriesController', [
+        'names' => [
+            'index' => 'Categories',
+            'create' => 'Categories New',
+            'store' => 'Categories Store',
+            'edit' => 'Categories Edit',
+            'update' => 'Categories Update',
+            'destroy' => 'Categories Delete',
+        ]
+    ]);
 });

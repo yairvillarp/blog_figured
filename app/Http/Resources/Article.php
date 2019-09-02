@@ -21,6 +21,8 @@ class Article extends Resource
             'title' => $this->title,
             'intro' => $this->intro,
             'img' => $this->img,
+            'category' => $this->category,
+            'slug' => $this->slug,
             'created_at' => $this->created_at
         ];
     }

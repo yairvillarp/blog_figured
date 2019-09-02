@@ -5,9 +5,9 @@
         <hr>
         <p>Posted on {{ article.created_at  | Date}}</p>
         <hr>
-        <img src="http://placehold.it/900x300" alt="" class="img-fluid rounded">
+        <img v-bind:src="'/images/'+article.img" v-bind:alt="article.title" class="img-fluid rounded">
         <hr>
-        <p class="lead">{{article.body}}</p>
+        <div class="lead" v-html="article.body"></div>
         <hr>
         <div class="card my-4">
             <h5 class="card-header">Leave a Comment:</h5>
@@ -41,7 +41,8 @@
                 article:{
                     title:'',
                     id:'',
-                    body:''
+                    body:'',
+                    img:'900x300.png',
                 },
                 author:'',
                 comment: {
@@ -58,7 +59,7 @@
 
         methods: {
             fetchArticle(){
-                fetch('api/article/'+this.$route.params.id)
+                fetch('api/article/'+this.$route.params.slug)
                     .then( res => res.json())
                     .then(res => {
                         this.article = res.data;
@@ -67,7 +68,7 @@
                     .catch(err => console.log(err));
             },
             addComment(){
-                fetch('api/article/'+this.$route.params.id+'/comment', {
+                fetch('api/article/'+this.article._id+'/comment', {
                     method: 'post',
                     body: JSON.stringify(this.comment),
                     headers:{
